@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>미정</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="/css/reset.css">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <!-- 기록추가 -->
+  <div id="wrap" class="add">
+
+    <header>
+      <a href="/calendar/<%=selectYear%>/<%=selectMonth%>"><i class="fa-solid fa-chevron-left" title="뒤로가기"></i></a>
+      <h1>
+        <span class="month"><%=selectMonth%>월</span>
+        <span class="date"><%=selectDay%>일</span></h1>
+    </header>
+    <!-- 고른날짜를 /add의 param에서 가져온것 -->
+    <section>
+      <h2>상태기록</h2>
+
+      <form name="frmCondition" id="frmCondition" action="/add" method="post">
+
+        <input type="hidden" name="selectYear" value="<%=selectYear%>">
+        <input type="hidden" name="selectMonth" value="<%=selectMonth%>">
+        <input type="hidden" name="selectDay" value="<%=selectDay%>">
+
+        <fieldset>
+          <legend>상태기록폼</legend>
+
+          <article>
+            <h3>기분</h3>
+
+            <div class="emotion">
+
+              <span class="radio">
+                <input type="checkbox" name="emotion" id="calm" value="calm">
+                <label for="calm">
+                  <p class="frame"><img src="/icon/calm.png" alt="calm"></p>
+                  침착한
+                </label>
+              </span>
+
+              <span class="radio">
+                <input type="checkbox" name="emotion" id="happy" value="happy">
+                <label for="happy">
+                  <p class="frame"><img src="/icon/happy.png" alt="happy"></p>
+                  행복한
+                </label>
+              </span>
+
+              <span class="radio">
+                <input type="checkbox" name="emotion" id="excited" value="excited">
+                <label for="excited">
+                  <p class="frame"><img src="/icon/excited.png" alt="excited"></p>
+                  활달한
+                </label>
+              </span>
+
+              <span class="radio">
+                <input type="checkbox" name="emotion" id="gloomy" value="gloomy">
+                <label for="gloomy">
+                  <p class="frame"><img src="/icon/gloomy.png" alt="gloomy"></p>
+                  침울한
+                </label>
+              </span>
+
+              <span class="radio">
+                <input type="checkbox" name="emotion" id="anxious" value="anxious">
+                <label for="anxious">
+                  <p class="frame"><img src="/icon/anxious.png" alt="anxious"></p>
+                  불안한
+                </label>
+              </span>
+
+              <span class="radio">
+                <input type="checkbox" name="emotion" id="stress" value="stress">
+                <label for="stress">
+                  <p class="frame"><img src="/icon/stress.png" alt="stress"></p>
+                  스트레스
+                </label>
+              </span>
+
+              <span class="radio">
+                <input type="checkbox" name="emotion" id="lethargy" value="lethargy">
+                <label for="lethargy">
+                  <p class="frame"><img src="/icon/lethargy.png" alt="lethargy"></p>
+                  무기력한
+                </label>
+              </span>
+
+              <span class="radio">
+                <input type="checkbox" name="emotion" id="fickle" value="fickle">
+                <label for="fickle">
+                  <p class="frame"><img src="/icon/fickle.png" alt="fickle"></p>
+                  변덕스러운
+                </label>
+              </span>
+
+            </div> <!--.emotion-->
+          </article>
+
+
+
+          <article>
+            <h3>건강</h3>
+
+            <div class="health">
+
+              <span class="checkbox">
+                <input type="checkbox" name="health" id="puke" value="puke">
+                <label for="puke">
+                  <p class="frame"><img src="/icon/puke.png" alt="puke"></p>
+                  구토
+                </label>
+              </span>
+
+              <span class="checkbox">
+                <input type="checkbox" name="health" id="diarrhea" value="diarrhea">
+                <label for="diarrhea">
+                  <p class="frame"><img src="/icon/diarrhea.png" alt="diarrhea"></p>
+                  설사
+                </label>
+              </span>
+
+              <span class="checkbox">
+                <input type="checkbox" name="health" id="appetiteloss" value="appetiteloss">
+                <label for="appetiteloss">
+                  <p class="frame"><img src="/icon/appetiteloss.png" alt="appetiteloss"></p>
+                  식욕감소
+                </label>
+              </span>
+
+              <span class="checkbox">
+                <input type="checkbox" name="health" id="ache" value="ache">
+                <label for="ache">
+                  <p class="frame"><img src="/icon/ache.png" alt="ache"></p>
+                  통증
+                </label>
+              </span>
+
+              <span class="checkbox">
+                <input type="checkbox" name="health" id="injury" value="injury">
+                <label for="injury">
+                  <p class="frame"><img src="/icon/injury.png" alt="injury"></p>
+                  부상
+                </label>
+              </span>
+
+            </div> <!--.health-->
+          </article>
+
+
+          <article>
+            <h3>산책</h3>
+
+            <div class="walk">
+
+              <span class="radio">
+                <input type="checkbox" name="walk" id="walk0" value="walk0">
+                <label for="walk0">
+                  <p class="frame"><img src="/icon/walk0.png" alt="walk0"></p>
+                  안했음
+                </label>
+              </span>
+
+              <span class="radio">
+                <input type="checkbox" name="walk" id="walk30" value="walk30">
+                <label for="walk30">
+                  <p class="frame"><img src="/icon/walk30.png" alt="walk30"></p>
+                  30분 이내
+                </label>
+              </span>
+
+              <span class="radio">
+                <input type="checkbox" name="walk" id="walk60" value="walk60">
+                <label for="walk60">
+                  <p class="frame"><img src="/icon/walk60.png" alt="walk60"></p>
+                  1시간 이내
+                </label>
+              </span>
+
+              <span class="radio">
+                <input type="checkbox" name="walk" id="walk120" value="walk120">
+                <label for="walk120">
+                  <p class="frame"><img src="/icon/walk120.png" alt="walk120"></p>
+                  2시간 이내
+                </label>
+              </span>
+
+              <span class="radio">
+                <input type="checkbox" name="walk" id="walkover" value="walkover">
+                <label for="walkover">
+                  <p class="frame"><img src="/icon/walkover.png" alt="walkover"></p>
+                  2시간 초과
+                </label>
+              </span>
+
+            </div> <!--.walk-->
+          </article>
+
+          <article>
+            <h3>목욕</h3>
+
+            <div class="bath">
+
+              <span class="radio">
+                <input type="checkbox" name="bath" id="yesbath" value="yesbath">
+                <label for="yesbath">
+                  <p class="frame"><img src="/icon/yesbath.png" alt="yesbath"></p>
+                  했음
+                </label>
+              </span>
+
+              <span class="radio">
+                <input type="checkbox" name="bath" id="nobath" value="nobath">
+                <label for="nobath">
+                  <p class="frame"><img src="/icon/nobath.png" alt="nobath"></p>
+                  안했음
+                </label>
+              </span>
+
+            </div> <!--.bath-->
+          </article>
+
+          <article>
+            <h3>식사급여</h3>
+
+            <div class="feed">
+
+              <span class="radio">
+                <input type="checkbox" name="feed" id="little" value="little">
+                <label for="little">
+                  <p class="frame"><img src="/icon/little.png" alt="little"></p>
+                  적게
+                </label>
+              </span>
+
+              <span class="radio">
+                <input type="checkbox" name="feed" id="normal" value="normal">
+                <label for="normal">
+                  <p class="frame"><img src="/icon/normal.png" alt="normal"></p>
+                  보통
+                </label>
+              </span>
+
+              <span class="radio">
+                <input type="checkbox" name="feed" id="many" value="many">
+                <label for="many">
+                  <p class="frame"><img src="/icon/many.png" alt="many"></p>
+                  많이
+                </label>
+              </span>
+
+            </div> <!--.feed-->
+          </article>
+
+          <article>
+            <h3>간식급여</h3>
+
+            <div class="treats">
+
+              <span class="checkbox">
+                <input type="checkbox" name="treats" id="meat" value="meat">
+                <label for="meat">
+                  <p class="frame"><img src="/icon/meat.png" alt="meat"></p>
+                  육류
+                </label>
+              </span>
+
+              <span class="checkbox">
+                <input type="checkbox" name="treats" id="fish" value="fish">
+                <label for="fish">
+                  <p class="frame"><img src="/icon/fish.png" alt="fish"></p>
+                  생선
+                </label>
+              </span>
+
+              <span class="checkbox">
+                <input type="checkbox" name="treats" id="gum" value="gum">
+                <label for="gum">
+                  <p class="frame"><img src="/icon/gum.png" alt="gum"></p>
+                  개껌
+                </label>
+              </span>
+
+              <span class="checkbox">
+                <input type="checkbox" name="treats" id="biscuit" value="biscuit">
+                <label for="biscuit">
+                  <p class="frame"><img src="/icon/biscuit.png" alt="biscuit"></p>
+                  비스킷
+                </label>
+              </span>
+
+              <span class="checkbox">
+                <input type="checkbox" name="treats" id="vegan" value="vegan">
+                <label for="vegan">
+                  <p class="frame"><img src="/icon/vegan.png" alt="vegan"></p>
+                  과일/채소류
+                </label>
+              </span>
+              
+              <span class="checkbox">
+                <input type="checkbox" name="treats" id="etc" value="etc">
+                <label for="etc">
+                  <p class="frame"><img src="/icon/etc.png" alt="etc"></p>
+                  기타
+                </label>
+              </span>
+
+            </div> <!--.treats-->
+          </article>
+
+
+          <button>저장</button>
+        </fieldset>
+      </form>
+    </section>
+
+    <footer>
+    </footer>
+
+    <aside class="top">
+      <i class="fa-solid fa-chevron-up"></i>
+    </aside>
+  </div>
+
+  <script>
+    const $top = document.querySelector('.top>i');
+    $top.addEventListener('click', ()=>{
+      window.scrollTo({top:0, behavior:"smooth"})
+    })
+
+    /* 기분, 산책, 목욕, 식사급여는 하나만 선택가능하도록 제한(건강, 간식은 다중입력 가능) */
+    // 기분
+    const $emotionCb = document.querySelectorAll('.emotion input');
+
+    $emotionCb.forEach((checkbox) => {
+      checkbox.addEventListener('change', function() {
+        // 현재 체크박스가 체크된 상태라면
+        if (this.checked) {
+          // 모든 체크박스를 체크 해제
+          $emotionCb.forEach(($cb) => {
+            if ($cb !== this) {
+              $cb.checked = false; // 체크 해제
+            }
+          });
+        }
+      });
+    });
+
+    // 산책
+    const $walkCb = document.querySelectorAll('.walk input');
+
+    $walkCb.forEach((checkbox) => {
+      checkbox.addEventListener('change', function() {
+        // 현재 체크박스가 체크된 상태라면
+        if (this.checked) {
+          // 모든 체크박스를 체크 해제
+          $walkCb.forEach(($cb) => {
+            if ($cb !== this) {
+              $cb.checked = false; // 체크 해제
+            }
+          });
+        }
+      });
+    });
+
+    // 목욕
+    const $bathCb = document.querySelectorAll('.bath input');
+
+    $bathCb.forEach((checkbox) => {
+      checkbox.addEventListener('change', function() {
+        // 현재 체크박스가 체크된 상태라면
+        if (this.checked) {
+          // 모든 체크박스를 체크 해제
+          $bathCb.forEach(($cb) => {
+            if ($cb !== this) {
+              $cb.checked = false; // 체크 해제
+            }
+          });
+        }
+      });
+    });
+    
+    // 식사급여
+    const $feedCb = document.querySelectorAll('.feed input');
+
+    $feedCb.forEach((checkbox) => {
+      checkbox.addEventListener('change', function() {
+        // 현재 체크박스가 체크된 상태라면
+        if (this.checked) {
+          // 모든 체크박스를 체크 해제
+          $feedCb.forEach(($cb) => {
+            if ($cb !== this) {
+              $cb.checked = false; // 체크 해제
+            }
+          });
+        }
+      });
+    });
+
+
+    /* 최소 한 항목이라도 선택되지 않으면 전송 제한 */
+    document.getElementById('frmCondition').addEventListener('submit', function(event) {
+      const $emotionCb = document.querySelectorAll('.emotion input');
+      const $walkCb = document.querySelectorAll('.walk input');
+      const $bathCb = document.querySelectorAll('.bath input');
+      const $feedCb = document.querySelectorAll('.feed input');
+      const $healthCb = document.querySelectorAll('.health input');
+      const $treatsCb = document.querySelectorAll('.treats input');
+      
+      let isChecked = false;
+
+      // 각 카테고리의 체크박스에서 체크된 항목이 있는지 확인
+      const checkboxesList = [$emotionCb, $walkCb, $bathCb, $feedCb, $healthCb, $treatsCb];
+      checkboxesList.forEach((checkboxes) => {
+        checkboxes.forEach((checkbox) => {
+          if (checkbox.checked) {
+            isChecked = true; // 체크된 항목이 있으면 true
+          }
+        });
+      });
+
+      // 체크된 항목이 없으면 전송 막기
+      if (!isChecked) {
+        alert('하나 이상의 항목을 선택해야 합니다.');
+        event.preventDefault(); // 폼 전송 막기
+      }
+    });
+  </script>
+</body>
+</html>

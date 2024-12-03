@@ -1,0 +1,694 @@
+@charset "UTF-8";
+@font-face {
+  font-family: "Pretendard-ExtraLight";
+  src: url("https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-ExtraLight.woff") format("woff");
+  font-weight: 200;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Pretendard-Light";
+  src: url("https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Light.woff") format("woff");
+  font-weight: 300;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Pretendard-Regular";
+  src: url("https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Pretendard-SemiBold";
+  src: url("https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-SemiBold.woff") format("woff");
+  font-weight: 600;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Pretendard-Bold";
+  src: url("https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Bold.woff") format("woff");
+  font-weight: 700;
+  font-style: normal;
+}
+@keyframes clicklabel {
+  0% {
+    transform: scale(0.8);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  75% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.1);
+  }
+}
+body {
+  color: #333;
+}
+
+#wrap {
+  display: flex;
+  flex-flow: column nowrap;
+  width: 100%;
+  max-width: 768px;
+  height: 100%;
+  margin: 0 auto;
+  font-family: "Pretendard-Regular";
+  font-size: 12px;
+  font-weight: 300;
+}
+#wrap > header {
+  position: fixed;
+  top: 0;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 768px;
+  height: 56px;
+  padding-top: 24px;
+  font-family: "Pretendard-Bold";
+  background-color: #fff;
+  z-index: 300;
+}
+#wrap > header > .selectListBtn {
+  border: none;
+  outline: none;
+  background: none;
+  position: absolute;
+  left: 30px;
+  font-size: 16px;
+  font-family: "pretendard-semibold";
+  cursor: pointer;
+}
+#wrap > header > h1 {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 0);
+}
+#wrap > header > h1 > a > i {
+  margin: 0 10px;
+  font-size: 16px;
+}
+#wrap > header > .goToday {
+  position: absolute;
+  right: 30px;
+  font-size: 16px;
+  font-family: "pretendard-semibold";
+}
+#wrap.add > header > a > i, #wrap.edit > header > a > i {
+  position: absolute;
+  left: 20px;
+  font-size: 20px;
+}
+#wrap.calendar > section {
+  display: flex;
+  flex-flow: column nowrap;
+  overflow: auto;
+  height: 100%;
+}
+#wrap.calendar > section > form {
+  overflow: auto;
+  flex: 1 1 auto;
+  padding: 30px 0 120px;
+}
+#wrap.calendar > section > form::-webkit-scrollbar {
+  width: 5px;
+}
+#wrap.calendar > section > form::-webkit-scrollbar-thumb {
+  background-color: #ddd;
+  border-radius: 50px;
+}
+#wrap.calendar > section > form > ul > li {
+  display: flex;
+}
+#wrap.calendar > section > form > ul > li > .inputContainer {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  width: 10%;
+  margin-bottom: 20px;
+}
+#wrap.calendar > section > form > ul > li > .liContainer {
+  width: 90%;
+  margin: 0 auto;
+  margin-bottom: 20px;
+  padding: 12px;
+  padding-top: 0;
+  border: 4px double #ddd;
+  border-radius: 15px;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+#wrap.calendar > section > form > ul > li > .liContainer:hover {
+  transform: scale(1.02);
+}
+#wrap.calendar > section > form > ul > li > .liContainer > .date {
+  display: flex;
+  align-items: center;
+  height: 30px;
+  padding: 0 6px;
+  font-family: "Pretendard-Light";
+  font-size: 13px;
+  border-bottom: 1px solid #d9d9d9;
+  margin-bottom: 10px;
+}
+#wrap.calendar > section > form > ul > li > .liContainer > .condition {
+  display: flex;
+  align-items: center;
+  overflow-x: scroll;
+  height: 50px;
+  padding: 0 12px;
+}
+#wrap.calendar > section > form > ul > li > .liContainer > .condition::-webkit-scrollbar {
+  height: 5px;
+}
+#wrap.calendar > section > form > ul > li > .liContainer > .condition::-webkit-scrollbar-thumb {
+  background-color: #ddd;
+  border-radius: 50px;
+}
+#wrap.calendar > section > form > ul > li > .liContainer > .condition > p {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 0 0 auto;
+  overflow: hidden;
+  width: 45px;
+  height: 45px;
+  margin-right: 17px;
+}
+#wrap.calendar > section > form > ul > li > .liContainer > .condition > p:last-child {
+  margin-right: 0px;
+}
+#wrap.calendar > section > form > ul > li > .liContainer > .condition > p > img {
+  width: 100%;
+}
+#wrap.calendar > section > p {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding-bottom: 92px;
+  font-size: 15px;
+  line-height: 1.5;
+  text-align: center;
+  box-sizing: border-box;
+}
+#wrap.calendar > section > article.detail {
+  display: none;
+  flex-flow: column nowrap;
+  flex: 0 0 400px;
+  width: 98%;
+  margin: 0 auto;
+  padding: 20px 15px 40px 15px;
+  box-sizing: border-box;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+  z-index: 200;
+  /* 지혜추가 여기까지 */
+}
+#wrap.calendar > section > article.detail > .tit {
+  display: flex;
+  align-items: center;
+  margin-left: 12px;
+  margin-bottom: 16px;
+}
+#wrap.calendar > section > article.detail > .tit > h4 {
+  flex: 1 0 auto;
+  font-size: 20px;
+}
+#wrap.calendar > section > article.detail > .tit > h4 > a {
+  margin-left: 6px;
+}
+#wrap.calendar > section > article.detail > .tit > i {
+  margin-right: 12px;
+  color: #888;
+  font-size: 20px;
+  cursor: pointer;
+}
+#wrap.calendar > section > article.detail > ul {
+  display: flex;
+  justify-content: space-between;
+  height: 30px;
+  margin-bottom: 16px;
+  padding: 3px;
+  background-color: #eee;
+  border-radius: 5px;
+}
+#wrap.calendar > section > article.detail > ul > li {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 31.6666666667%;
+  border-radius: 5px;
+  cursor: pointer;
+}
+#wrap.calendar > section > article.detail > ul > li:hover {
+  background-color: #fff;
+}
+#wrap.calendar > section > article.detail > ul > li.on {
+  background-color: #fff;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+}
+#wrap.calendar > section > article.detail > ul > li.on:hover {
+  background-color: #ddd;
+  box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.2);
+}
+#wrap.calendar > section > article.detail > .view {
+  flex: 1 0 auto;
+  padding: 12px;
+  box-sizing: border-box;
+  background-color: #eee;
+  border-radius: 5px;
+}
+#wrap.calendar > section > article.detail > .view > .iconArea {
+  display: flex;
+  flex-flow: column wrap;
+  height: 50%;
+}
+#wrap.calendar > section > article.detail > .view > .iconArea > h4 {
+  font-family: "Pretendard-SemiBold";
+  font-size: 14px;
+}
+#wrap.calendar > section > article.detail > .view > .iconArea > .iconOut {
+  display: flex;
+  flex-flow: row wrap;
+  flex: 1 0 0;
+  padding: 12px 0;
+}
+#wrap.calendar > section > article.detail > .view > .iconArea > .iconOut > p {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-self: flex-start;
+  width: 50px;
+  height: 50px;
+  margin-right: 12px;
+  margin-bottom: 12px;
+}
+> #wrap.calendar > section > article.detail > .view > .iconArea > .iconOut > p:last-child {
+  margin: 0;
+}
+#wrap.calendar > section > article.detail > .view > .iconArea > .iconOut > p > img {
+  width: 100%;
+}
+#wrap.calendar > section > article.detail > .view > .iconArea > .iconOut > span {
+  align-self: center;
+  font-size: 13px;
+  margin-left: 12px;
+  margin-bottom: 12px;
+}
+#wrap.calendar > section > article.detail.on {
+  display: flex;
+}
+#wrap > section {
+  padding-top: 80px;
+  width: 100%;
+  max-width: 768px;
+}
+#wrap > section > h2 {
+  display: none;
+}
+#wrap > section > form > fieldset {
+  padding: 12px;
+}
+#wrap > section > form > fieldset > article {
+  margin-bottom: 30px;
+}
+#wrap > section > form > fieldset > article > h3 {
+  display: flex;
+  align-items: center;
+  height: 40px;
+  padding: 0 20px;
+  font-size: 16px;
+}
+#wrap > section > form > fieldset > article > div {
+  padding: 16px;
+  border-radius: 20px;
+  box-shadow: 0 2px 7px rgba(0, 0, 0, 0.2);
+}
+#wrap > section > form > fieldset > article > div > span {
+  display: inline-block;
+  margin-right: 20px;
+  margin-bottom: 20px;
+}
+#wrap > section > form > fieldset > article > div > span > input {
+  display: none;
+}
+#wrap > section > form > fieldset > article > div > span > input:checked + label {
+  animation: clicklabel 0.5s 1 forwards;
+  background-color: #555;
+  color: #eee;
+}
+#wrap > section > form > fieldset > article > div > span > label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 45px;
+  padding: 0 17px;
+  font-size: 14px;
+  border-radius: 20px;
+  background-color: #eee;
+}
+#wrap > section > form > fieldset > article > div > span > label:hover {
+  transform: scale(1.1);
+}
+#wrap > section > form > fieldset > article > div > span > label > .frame {
+  overflow: hidden;
+  width: 30px;
+  height: 30px;
+  z-index: 100;
+  margin-right: 7px;
+}
+#wrap > section > form > fieldset > article > div > span > label > .frame > img {
+  display: block;
+  width: 100%;
+}
+#wrap > section > form > fieldset > button {
+  position: fixed;
+  top: 35px;
+  right: 32px;
+  padding: 5px;
+  font-family: "Pretendard-Regular";
+  font-size: 16px;
+  border: none;
+  outline: none;
+  background: none;
+  z-index: 300;
+}
+#wrap > aside.top {
+  display: flex;
+  justify-content: center;
+  padding: 20px 0 60px;
+}
+#wrap > aside.top > i {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  background-color: #eee;
+  border-radius: 50%;
+  cursor: pointer;
+  color: #aaa;
+}
+#wrap > aside.btnAdd {
+  position: fixed;
+  left: 50%;
+  bottom: 0;
+  transform: translate(-50%, 0);
+  text-align: center;
+  width: 80px;
+  margin: 0 auto 60px;
+  padding: 10px 0;
+  color: #fff;
+  font-size: 12px;
+  font-family: "Pretendard-Bold";
+  background-color: lightcoral;
+  border: 2px solid lightcoral;
+  box-sizing: border-box;
+  border-radius: 30px;
+  cursor: pointer;
+}
+#wrap > aside.btnAdd:hover {
+  color: lightcoral;
+  background-color: #fff;
+}
+#wrap.main > section {
+  padding-bottom: 50px;
+}
+#wrap.main > section > article {
+  margin-bottom: 30px;
+}
+#wrap.main > section > article > h3 {
+  display: none;
+}
+#wrap.main > section > article.conditionIcons > ul {
+  display: flex;
+  overflow: auto;
+  margin-top: 10px;
+  padding: 10px 20px;
+}
+#wrap.main > section > article.conditionIcons > ul::-webkit-scrollbar {
+  height: 5px;
+}
+#wrap.main > section > article.conditionIcons > ul::-webkit-scrollbar-thumb {
+  background-color: #ddd;
+  border-radius: 50px;
+}
+#wrap.main > section > article.conditionIcons > ul > li {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 0 0 auto;
+  width: 50px;
+  height: 50px;
+  margin-right: 18px;
+}
+#wrap.main > section > article.conditionIcons > ul > li:last-of-type {
+  margin-right: 0;
+}
+#wrap.main > section > article.conditionIcons > ul > li > img {
+  width: 100%;
+}
+#wrap.main > section > article.currentWeather {
+  display: flex;
+  justify-content: space-evenly;
+  padding-bottom: 30px;
+}
+#wrap.main > section > article.currentWeather > .currentIcon > img {
+  display: block;
+  width: 200px;
+}
+#wrap.main > section > article.currentWeather > .currentInfo {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+}
+#wrap.main > section > article.currentWeather > .currentInfo > p {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30px;
+  font-family: "Pretendard-SemiBold";
+  font-size: 28px;
+  text-align: center;
+}
+#wrap.main > section > article.currentWeather > .currentInfo > p > .description {
+  font-size: 24px;
+}
+#wrap.main > section > article.currentWeather > .currentInfo > h3 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 70px;
+  margin: 20px 0;
+  margin-left: 30px;
+  font-size: 64px;
+  font-family: "Pretendard-Light";
+}
+#wrap.main > section > article.additional {
+  width: 95%;
+  margin: 0 auto;
+  padding: 12px 0;
+  margin-bottom: 20px;
+  color: #555;
+  font-family: "Pretendard-SemiBold";
+  background-color: rgba(218, 232, 245, 0.7);
+  border-radius: 13px;
+  box-sizing: border-box;
+}
+#wrap.main > section > article.additional > ul {
+  display: flex;
+  overflow: auto;
+}
+#wrap.main > section > article.additional > ul::-webkit-scrollbar {
+  height: 5px;
+}
+#wrap.main > section > article.additional > ul::-webkit-scrollbar-thumb {
+  background-color: #ddd;
+  border-radius: 50px;
+}
+#wrap.main > section > article.additional > ul > li {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: center;
+  padding: 0 16px;
+}
+#wrap.main > section > article.additional > ul > li > p {
+  width: 71px;
+  text-align: center;
+}
+#wrap.main > section > article.additional > ul > li > p.frame {
+  width: 60px;
+}
+#wrap.main > section > article.additional > ul > li > p.frame > img {
+  display: block;
+  width: 100%;
+}
+#wrap.main > section > article.additional > p.title {
+  margin: 0 12px 6px;
+  padding-left: 6px;
+  padding-bottom: 6px;
+}
+#wrap.main > section > article.additional > p.title:first-of-type {
+  border-bottom: 1px solid #d9d9d9;
+}
+#wrap.main > section > article.additional > p.title:last-of-type {
+  padding-bottom: 0;
+}
+#wrap.main > section > article.additional.walkAdvice > ul {
+  margin: 12px;
+}
+#wrap.main > section > article.additional.walkAdvice > ul > li {
+  margin-right: 10px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  font-size: 13px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 10px;
+}
+#wrap.main > section > article.additional.walkAdvice > ul > li > p {
+  width: 77px;
+}
+#wrap.main > section > article.additional.notice > p {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 70px;
+  font-size: 23px;
+  z-index: 100;
+}
+#wrap.main > section > article.additional.notice > .recommend {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+#wrap.main > section > article.additional.notice > .recommend > ul {
+  z-index: 100;
+}
+#wrap.main > section > article.additional.notice > .recommend > ul > li {
+  line-height: 30px;
+  height: 30px;
+  font-size: 13px;
+}
+#wrap.main > header > a {
+  display: block;
+  position: absolute;
+  font-family: "pretendard-SemiBold";
+  font-size: 20px;
+}
+#wrap.main > header > a:nth-of-type(1) {
+  left: 20px;
+}
+#wrap.main > header > a:nth-of-type(2) {
+  position: absolute;
+  right: 30px;
+  font-size: 16px;
+  font-family: "pretendard-semibold";
+}
+
+#addDate {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 300;
+}
+#addDate > section {
+  position: fixed;
+  left: 50%;
+  top: 45%;
+  transform: translate(-50%, -50%);
+  width: 70%;
+  height: 30%;
+  min-height: 200px;
+  padding: 50px 0;
+  box-sizing: border-box;
+  background-color: #fff;
+  border-radius: 30px;
+  z-index: 300;
+}
+#addDate > section > i {
+  position: fixed;
+  right: 30px;
+  top: 30px;
+  color: #d9d9d9;
+  font-size: 20px;
+}
+#addDate > section > h4 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40%;
+  font-family: "Pretendard-Bold";
+  font-size: 13px;
+}
+#addDate > section > form {
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  padding-top: 5px;
+  box-sizing: border-box;
+  height: 60%;
+}
+#addDate > section > form > select {
+  height: 45px;
+  margin-right: 10px;
+  color: #333;
+  font-size: 16px;
+  font-family: "Pretendard-bold";
+  border: none;
+  outline: none;
+}
+#addDate > section > form > select:focus {
+  border-top: 2px solid #d9d9d9;
+  border-bottom: 2px solid #d9d9d9;
+}
+#addDate > section > form > select:last-of-type {
+  margin-right: 0;
+}
+#addDate > section > form > .btns {
+  position: absolute;
+  left: 50%;
+  bottom: 30px;
+  transform: translate(-50%, 0);
+}
+#addDate > section > form > .btns > button {
+  border: none;
+  outline: none;
+  background: none;
+  padding: 10px 16px;
+  color: #fff;
+  font-size: 12px;
+  font-family: "Pretendard-Bold";
+  background-color: lightcoral;
+  border: 2px solid lightcoral;
+  box-sizing: border-box;
+  border-radius: 30px;
+}
+#addDate > section > form > .btns > button:hover {
+  color: lightcoral;
+  background-color: #fff;
+}
+#addDate > section > form > .btns > span {
+  margin-right: 12px;
+  padding: 10px 16px;
+  color: #fff;
+  font-size: 12px;
+  font-family: "Pretendard-Bold";
+  background-color: #ccc;
+  border: 2px solid #ccc;
+  box-sizing: border-box;
+  border-radius: 30px;
+  cursor: pointer;
+}
+#addDate > section > form > .btns > span:hover {
+  color: #ccc;
+  background-color: #fff;
+}/*# sourceMappingURL=style.css.map */

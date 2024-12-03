@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>미정</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="/css/reset.css">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <!-- 일지 목록페이지 -->
+  <div id="wrap" class="calendar">
+
+    <header>
+      <button class="selectListBtn">기록선택</button>
+      <h1>
+        <!-- 이전달버튼 -->
+        <a href="/calendar/<%=prevYear%>/<%=prevMonth%>"><i class="fa-solid fa-caret-left"></i></a>
+
+        <!-- 실제현재년도와 비교해 다른년도면 년도출력 -->
+        <% const currentYear = new Date().getFullYear(); %>
+        <% if(currentYear > paramsYear || currentYear < paramsYear) { %>
+          <span><%= paramsYear %>년</span>
+        <% } %>
+        <%= paramsMonth %>월
+
+        <!-- 다음달버튼(현재년월과 일치하면 미출력) -->
+        <% const currentMonth = new Date().getMonth(); %>
+        <% if((paramsYear <= currentYear && paramsMonth <= currentMonth) || (paramsYear < currentYear)) { %>
+          
+        <a href="/calendar/<%=nextYear%>/<%=nextMonth%>"><i class="fa-solid fa-caret-right"></i></a>
+        <% } %>
+      </h1>
+
+      <p class="goToday"><a href="/">오늘</a></p>
+    </header>
+
+    <section>
+      <h2>일지목록</h2>
+
+      <!-- 입력데이터가 있으면 출력할 ul -->
+      <% if(checkCount > 0) { %>
+        <form action="/deleteData" method="post" name="deleteDataFrm" id="deleteDataFrm">
+          <input type="hidden" name="year" value="<%=paramsYear%>" />
+          <input type="hidden" name="month" value="<%=paramsMonth%>" />
+          <ul class="dailyList">
+
+            <!-- 등록일이 해당년월과 일치하는 conditionData배열 순회/배열의 길이만큼 반복 -->
+            <% for(let objCondition of conditionData) { %>
+              <li>
+                <div class="inputContainer" style="display: none;">
+                  <input type="checkbox" name="deleteList" value="<%= objCondition.regdate %>" class="listCheckbox">
+                </div>
+                <div class="liContainer">
+                  <!-- conditionData의 각 아이템 객체에서 등록일 추출해 h3에 출력 -->
+                  <h3 class="date">
+                    <% const dataDay = new Date(objCondition.regdate).getDate(); %>
+                    <input type="hidden" class="regdate" value="<%= objCondition.regdate %>">
+                    <%= dataDay %>일
+                  </h3>
+  
+                  <div class="condition">
+  
+                    <!-- conditionData의 각 아이템 객체에서 input값 추출해 출력 -->
+                    <% for(let condition in objCondition) { %>
+                      <% if(condition !== 'regdate' && objCondition[condition] !== null) { %>
+                        <% const imgSrc = "/icon/"+objCondition[condition]+".png"%>
+                      <p>
+                        <img src=<%=imgSrc%> alt="<%=objCondition[condition]%>">
+                      </p>
+                      <% } %>
+                    <% } %>
+  
+                    <!-- healthData배열의 각 아이템 객체에서 등록일이 일치하는 health값 추출해 출력 -->
+                    <% for(let objHealth of healthData) { %>
+                      <% if(new Date(objHealth.regdate).getDate() === dataDay && objHealth.health !== null) { %>
+                        <% const imgSrc = "/icon/"+objHealth.health+".png"%>
+                      <p>
+                        <img src=<%=imgSrc%> alt="<%=objHealth.health%>">
+                      </p>
+                      <% } %>
+                    <% } %>
+  
+                    <!-- treatsData배열의 각 아이템 객체에서 등록일이 일치하는 treats값 추출해 출력 -->
+                    <% for(let objTreats of treatsData) { %>
+                      <% if(new Date(objTreats.regdate).getDate() === dataDay && objTreats.treats !== null) { %>
+                        <% const imgSrc = "/icon/"+objTreats.treats+".png"%>
+                      <p>
+                        <img src=<%=imgSrc%> alt="<%=objTreats.treats%>">
+                      </p>
+                      <% } %>
+                    <% } %>
+  
+                  </div>
+                </div>
+                
+  
+              </li>
+            <% } %>
+          </ul>
+        </form>
+
+      <% } else { %>
+        <!-- 입력데이터가 없으면 출력할 p -->
+
+        <p>
+          아직 <%= paramsMonth %>월에 기록된 일지가 없습니다. <br />
+          아래 버튼을 눌러 일지를 추가해보세요!
+        </p>
+
+      <% } %>
+      
+      <article class="detail">
+
+        <div class="tit">
+          <h4>
+            <span id="detailRegdate"></span>
+            <a href="/edit/2024/7/2"><i class="fa-solid fa-pen-to-square" title="edit"></i></a>
+          </h4>
+          <i class="fa-solid fa-circle-xmark" title="close"></i>
+        </div>
+        <ul>
+          <li class="on">상태</li>
+          <li>일과</li>
+          <li>급여</li>
+        </ul>
+
+        <div class="view" id="detailIcon">
+          <div class="iconArea">
+            <h4 class="areaTit">기분</h4>
+            <div class="iconOut">
+              <span>emotion1</span>
+              <span>emotion2</span>
+              <span>emotion3</span>
+            </div>
+          </div>
+          <div class="iconArea">
+            <h4 class="areaTit">건강</h4>
+            <div class="iconOut">
+              <span>health1</span>
+              <span>health2</span>
+              <span>health3</span>
+            </div>
+          </div>
+          </div>
+
+      </article>
+
+    </section>
+
+    <aside class="btnAdd">
+      <span>기록추가</span>
+    </aside>
+
+    
+    <footer>
+    </footer>
+
+  </div>
+
+  <!-- '기록추가' 버튼 누르면 나타나는 날짜선택 창 -->
+  <div id="addDate">
+    <section>
+      
+      <h4>날짜를 선택해주세요</h4>
+
+      <form name="frmDateSelect" id="frmDateSelect" action="/calendar" method="post">
+        <select name="year" id="year">
+
+        </select>
+
+        <select name="month" id="month">
+
+        </select>
+
+        <select name="day" id="day">
+          
+        </select>
+
+        <div class="btns">
+          <span>닫기</span>
+          <button>완료</button>
+        </div>
+      </form>
+    </section>
+  </div>
+
+  <script>
+    // 기록추가-날짜선택창의 날짜들을 개발일~현재까지 동적생성
+    // 현재시점에선 개발일자와 현재날짜가 같으므로 개발일자를 '2022-04-22'로 상정하였음
+
+    // 년도
+    const $selectYear = document.querySelector('#frmDateSelect>#year');
+    const $selectMonth = document.querySelector('#frmDateSelect>#month');
+    const $selectDay = document.querySelector('#frmDateSelect>#day');
+
+    const devDate = new Date('2019-05-06');
+    const devYear = devDate.getFullYear();
+    const devMonth = devDate.getMonth()+1;
+    const devDay = devDate.getDate();
+
+    const nowDate = new Date();
+    const nowYear = nowDate.getFullYear();
+    const nowMonth = nowDate.getMonth()+1;
+    const nowDay = nowDate.getDate();
+
+    // 개발년도~현재년도까지 '년도' 생성하는 함수
+    function createYears() {
+      
+      for(let startYear=devYear; startYear<=nowYear; startYear++) {
+        const $option = document.createElement('option');
+        $option.value = startYear;
+        $option.textContent = startYear + '년';
+  
+        // 현재년도에 seleted //임시
+        if($option.value === nowYear.toString()) {
+          $option.setAttribute('selected', true);
+        }
+
+        // select태그에 option태그 결합
+        $selectYear.append($option);
+      }
+
+      // console.log('$selectYear.value =', $selectYear.value);
+    }
+
+    // 개발년도의 월~현재년도 월까지 '월' 생성하는 함수
+    // 선택년도를 인자로 받아서 비교
+    function createMonths(selectedYear) {
+
+      // '선택년도 === 개발년도'일 시, 개발년도~12월까지 생성
+      if(selectedYear === devYear.toString()) {
+
+        for(let startMonth=devMonth; startMonth<=12; startMonth++) {
+
+          const $option = document.createElement('option');
+          $option.value = startMonth;
+          $option.textContent = startMonth + '월';
+
+          // select 태그에 option 태그 결합
+          $selectMonth.append($option);
+        }
+        console.log('1실행')
+        
+        // '선택년도 === 현재년도'일 시, 1월~현재년도까지 생성
+      } else if(selectedYear === nowYear.toString()) {
+        
+        for(let startMonth=1; startMonth<=nowMonth; startMonth++) {
+
+          const $option = document.createElement('option');
+          $option.value = startMonth;
+          $option.textContent = startMonth + '월';
+          
+          // 현재년도면 처음에는 일단 현재월이 떠야하는디.. //임시
+          if($option.value === nowMonth.toString()) {
+            $option.setAttribute('selected', true)
+          }
+
+          // select 태그에 option 태그 결합
+          $selectMonth.append($option);
+        }
+        
+        console.log('2실행')
+
+        // 그 외에는 1~12월 생성
+      } else {
+
+        for(let startMonth=1; startMonth<=12; startMonth++) {
+
+          const $option = document.createElement('option');
+          $option.value = startMonth;
+          $option.textContent = startMonth + '월';
+          
+          // select 태그에 option 태그 결합
+          $selectMonth.append($option);
+        }
+        console.log('3실행')
+      }
+
+    }
+
+    // 개발일~현재일 까지 '일' 생성하는 함수
+    // 선택년도, 선택월을 인자로 받아서 비교
+    function createDays(selectedYear, selectedMonth) {
+
+      // 선택날짜의 말일 구하기
+      const lastDay = new Date(selectedYear, selectedMonth, 0).getDate();
+      // console.log('selectedYear =',selectedYear)
+      // console.log('selectedMonth =', selectedMonth)
+      console.log('lastDay =', lastDay);
+
+      // '선택년도 === 개발년도 && 선택월 === 개발월'일 시, 개발일~말일까지 생성
+      if(selectedYear === devYear.toString() && selectedMonth === devMonth.toString()) {
+
+        for(let startDay=devDay; startDay<=lastDay; startDay++) {
+          const $option = document.createElement('option');
+          $option.value = startDay;
+          $option.textContent = startDay + '일';
+
+          // select 태그에 option 태그 결합
+          $selectDay.append($option);
+        }
+
+        console.log('일1실행')
+        // '선택년도 === 현재년도 && 선택월 === 현재월'일 시, 1~현재일까지 생성
+      } else if(selectedYear === nowYear.toString() && selectedMonth === nowMonth.toString()) {
+
+        for(let startDay=1; startDay<=nowDay; startDay++) {
+          const $option = document.createElement('option');
+          $option.value = startDay;
+          $option.textContent = startDay + '일';
+
+          // 오늘날짜에 select //임시
+          if($option.value === nowDay.toString()) {
+            $option.setAttribute('selected', true)
+          }
+
+          // select 태그에 option 태그 결합
+          $selectDay.append($option);
+
+        }
+
+        console.log('일2실행')
+        
+        // 그 외에는 1~31일까지 생성
+      } else {
+
+        for(let startDay=1; startDay<=lastDay; startDay++) {
+          const $option = document.createElement('option');
+          $option.value = startDay;
+          $option.textContent = startDay + '일';
+
+          // select 태그에 option 태그 결합
+          $selectDay.append($option);
+        }
+
+        console.log('일3실행')
+      }
+
+    }
+
+    // 초기세팅
+    createYears();
+    createMonths($selectYear.value);
+    console.log('$selectYear.value =',$selectYear.value);
+    createDays($selectYear.value, $selectMonth.value);
+    console.log('$selectMonth.value =',$selectMonth.value);
+
+    // select>option선택시 'change'이벤트가 발생함
+    $selectYear.addEventListener('change', (evt)=>{
+      // 년도를 여러번 재선택시, 이전선택 시에 생성된 option 제거
+      while($selectMonth.childElementCount > 0) {
+        $selectMonth.removeChild($selectMonth.firstChild);
+      }
+      
+      // 재선택한 년도에 맞게 월 생성함수 재실행
+      createMonths($selectYear.value);
+
+      // 이전선택 시에 생성된 일 option 제거
+      while($selectDay.childElementCount > 0) {
+        $selectDay.removeChild($selectDay.firstChild);
+      }
+      
+      // 월에 맞게 일 생성함수 재실행
+      createDays($selectYear.value, $selectMonth.value);
+    })
+
+    // select>option선택시 'change'이벤트가 발생함
+    $selectMonth.addEventListener('change', (evt)=>{
+
+      // 이전선택 시에 생성된 일 option 제거
+      while($selectDay.childElementCount > 0) {
+        $selectDay.removeChild($selectDay.firstChild);
+      }
+      
+      // 월에 맞게 일 생성함수 재실행
+      createDays($selectYear.value, $selectMonth.value);
+    })
+
+
+    // 기록추가 버튼 누를시 날짜선택창 보이기
+    const $btnAdd = document.querySelector('#wrap.calendar>.btnAdd');
+    const $addDate = document.querySelector('#addDate');
+    const $btnCancel = document.querySelector('#addDate form>.btns>span');
+
+    $btnAdd.addEventListener('click', ()=>{
+      $addDate.style.display = 'initial';
+
+      // 오늘날짜로 selected되도록 초기화
+      const $optionYears = document.querySelectorAll('#year > option');
+      const $optionMonths = document.querySelectorAll('#month > option');
+      const $optionDays = document.querySelectorAll('#day > option');
+
+      $optionYears.forEach(($optionYear)=>{
+        $optionYear.removeAttribute('selected');
+        if($optionYear.value === nowYear.toString()) {
+          $optionYear.setAttribute('selected', true);
+        }
+      })
+      
+      $optionMonths.forEach(($optionMonth)=>{
+        $optionMonth.removeAttribute('selected');
+        if($optionMonth.value === nowMonth.toString()) {
+          $optionMonth.setAttribute('selected', true);
+        }
+      })
+      
+      $optionDays.forEach(($optionDay)=>{
+        $optionDay.removeAttribute('selected');
+        if($optionDay.value === nowDay.toString()) {
+          $optionDay.setAttribute('selected', true);
+        }
+      })
+    });
+
+    $btnCancel.addEventListener('click', ()=>{
+      $addDate.style.display = 'none';
+    });
+    
+
+    // 리스트항목 누르면 상세보기
+      const $detail = document.querySelector('.detail');
+      const $lists = document.querySelectorAll('.dailyList .liContainer')
+      const $btnClose = document.querySelector('.fa-circle-xmark');
+      
+      const $detailDate = document.querySelector('.detail>.tit>h4>span');
+
+      // 리스트항목 아무거나 누르면 on클래스로 열고(display) 해당항목과 일치하는내용으로 textContent
+      (function() {
+
+        let nowIdx = 0;
+        let oldIdx = nowIdx;
+
+        $lists.forEach(($list, idx)=>{
+          
+          $list.addEventListener('click', ()=>{
+            $detail.classList.add('on');
+
+            oldIdx = nowIdx;
+            nowIdx = idx;
+
+            // input hidden value (날짜) 및 가져올데이터(condition, health, treats)
+            const clickRegdate = $list.firstElementChild.firstElementChild.value;
+
+            // Get 방식으로 요청
+            fetch('/calendar/detail?regdate=' + clickRegdate)
+              .then(response => {
+                // 응답이 정상인지 확인
+                if (!response.ok) {
+                  throw new Error('Network response was not ok');
+                }
+                return response.json(); // JSON 형태로 변환
+              })
+              .then(obj => {
+                // console.log(obj.health);
+                const regdateDate = new Date(obj.regdate);
+                
+                // 날짜 변환
+                const clickYear = regdateDate.getFullYear();
+                const clickMonth = regdateDate.getMonth() + 1; // 월은 0부터 시작
+                const clickDate = regdateDate.getDate();
+
+                // 출력되는 날짜 변경
+                document.getElementById('detailRegdate').innerText = `${clickYear}. ${clickMonth}. ${clickDate}`;
+                
+                // 수정버튼의 링크 날짜 변경
+                document.querySelector('.detail > .tit > h4 > a').href = `/edit/${clickYear}/${clickMonth}/${clickDate}`;
+
+
+                /*
+                  컬럼 :
+                    condition - 기분, 산책, 목욕, 사료
+                    health    - 건강
+                    treats    - 간식
+
+                    상태 - 기분, 건강
+                    일과 - 산책, 목욕
+                    급여 - 사료, 간식
+                */
+
+                // 소제목 변경
+                const firstTit = document.querySelector('#detailIcon > .iconArea:first-child > .areaTit');
+                firstTit.textContent = '기분';
+
+                const secTit = document.querySelector('#detailIcon > .iconArea:last-child > .areaTit');
+                secTit.textContent = '건강';
+
+                // '상태' 탭에 class on (스타일)
+                const $detailUl = document.querySelectorAll('.detail>ul>li');
+                $detailUl.forEach(($detailLi, idx)=>{
+                  $detailLi.classList.remove('on');
+                  $detailUl[0].classList.add('on');
+                })
+
+                /* "상태" 탭 출력 */
+                // healthTBL의 health컬럼 값을 추출해 배열형태로 저장
+                let healthItem = [];
+                obj.health.forEach((objHealth)=>{
+                  healthItem.push(objHealth.health);
+                })
+
+                // 출력하기 전 컨테이너 비우기
+                const iconOuts = document.querySelectorAll('.iconOut');
+                iconOuts.forEach((iconOut)=>{
+                  while(iconOut.childElementCount > 0) {
+                    iconOut.removeChild(iconOut.firstChild);
+                  }
+                })
+
+                // emotion값을 컨테이너에 출력
+                if(obj.emotion.emotion !== null) {
+                  // emotion값이 있으면 출력
+                  const p = document.createElement('p');
+                  const img = document.createElement('img')
+                  img.src = "/icon/"+obj.emotion.emotion+".png";
+                  // "기분"아이콘이 출력될 컨테이너 선택
+                  const emotionArea = document.querySelector('#detailIcon > div:nth-of-type(1) > .iconOut');
+                  p.appendChild(img);
+                  emotionArea.appendChild(p);
+                } else {
+                  // 없으면 메세지 출력
+                  const span = document.createElement('span');
+                  span.textContent = "기분이 기록되지 않았습니다 !";
+                  // "기분"아이콘이 출력될 컨테이너 선택
+                  const emotionArea = document.querySelector('#detailIcon > div:nth-of-type(1) > .iconOut');
+                  emotionArea.appendChild(span);
+                }
+
+                // 배열로 저장한 health값들을 컨테이너에 출력
+                healthItem.forEach((health)=>{
+                  // health값 있으면 출력
+                  if(health !== null) {
+                    // health값이 있으면 출력
+                    const p = document.createElement('p');
+                    const img = document.createElement('img')
+                    img.src = "/icon/"+health+".png";
+                    // "건강"아이콘이 출력될 컨테이너 선택
+                    const healthArea = document.querySelector('#detailIcon > div:nth-of-type(2) > .iconOut');
+                    p.appendChild(img);
+                    healthArea.appendChild(p);
+                  } else {
+                    // 없으면 메세지 출력
+                    const span = document.createElement('span');
+                    span.textContent = "건강이 기록되지 않았습니다 !";
+                    // "건강"아이콘이 출력될 컨테이너 선택
+                    const healthArea = document.querySelector('#detailIcon > div:nth-of-type(2) > .iconOut');
+                    healthArea.appendChild(span);
+                  }
+                })
+                // document.getElementById('detailIcon').innerHTML
+
+                // 상세보기창의 상세,일과,건강 항목 현재 클릭한 항목에 on클래스(css)
+
+                let tabNowIdx = 0;
+                let tabOldIdx = tabNowIdx;
+
+                $detailUl.forEach(($detailLi, idx)=>{
+
+                  $detailLi.addEventListener('click', ()=>{
+
+                    tabOldIdx = tabNowIdx;
+                    tabNowIdx = idx;
+
+                    $detailUl[tabOldIdx].classList.remove('on');
+                    $detailUl[tabNowIdx].classList.add('on');
+                    
+                    //alert(nowIdx);
+
+                    // 출력하기 전 컨테이너 비우기
+                    const iconOuts = document.querySelectorAll('.iconOut');
+                    iconOuts.forEach((iconOut)=>{
+                      while(iconOut.childElementCount > 0) {
+                        iconOut.removeChild(iconOut.firstChild);
+                      }
+                    })
+                    console.log(tabNowIdx);
+                    // "상태" 탭 출력
+                    if(tabNowIdx === 0) {
+                      // 소제목 변경
+                      const firstTit = document.querySelector('#detailIcon > .iconArea:first-child > .areaTit');
+                      firstTit.textContent = '기분';
+
+                      const secTit = document.querySelector('#detailIcon > .iconArea:last-child > .areaTit');
+                      secTit.textContent = '건강';
+
+                      // healthTBL의 health컬럼 값을 추출해 배열형태로 저장
+                      let healthItem = [];
+                      obj.health.forEach((objHealth)=>{
+                        healthItem.push(objHealth.health);
+                      })
+
+                      // 출력하기 전 컨테이너 비우기
+                      const iconOuts = document.querySelectorAll('.iconOut');
+                      iconOuts.forEach((iconOut)=>{
+                        while(iconOut.childElementCount > 0) {
+                          iconOut.removeChild(iconOut.firstChild);
+                        }
+                      })
+
+                      // emotion값을 컨테이너에 출력
+                      if(obj.emotion.emotion !== null) {
+                        // emotion값이 있으면 출력
+                        const p = document.createElement('p');
+                        const img = document.createElement('img')
+                        img.src = "/icon/"+obj.emotion.emotion+".png";
+                        // "기분"아이콘이 출력될 컨테이너 선택
+                        const emotionArea = document.querySelector('#detailIcon > div:nth-of-type(1) > .iconOut');
+                        p.appendChild(img);
+                        emotionArea.appendChild(p);
+                      } else {
+                        // 없으면 메세지 출력
+                        const span = document.createElement('span');
+                        span.textContent = "기분이 기록되지 않았습니다 !";
+                        // "기분"아이콘이 출력될 컨테이너 선택
+                        const emotionArea = document.querySelector('#detailIcon > div:nth-of-type(1) > .iconOut');
+                        emotionArea.appendChild(span);
+                      }
+
+                      // 배열로 저장한 health값들을 컨테이너에 출력
+                      healthItem.forEach((health)=>{
+                        // health값 있으면 출력
+                        if(health !== null) {
+                          const p = document.createElement('p');
+                          const img = document.createElement('img')
+                          img.src = "/icon/"+health+".png";
+                          // "건강"아이콘이 출력될 컨테이너 선택
+                          const healthArea = document.querySelector('#detailIcon > div:nth-of-type(2) > .iconOut');
+                          p.appendChild(img);
+                          healthArea.appendChild(p);
+                        } else {
+                          // 없으면 메세지 출력
+                          const span = document.createElement('span');
+                          span.textContent = "건강이 기록되지 않았습니다 !";
+                          // "건강"아이콘이 출력될 컨테이너 선택
+                          const healthArea = document.querySelector('#detailIcon > div:nth-of-type(2) > .iconOut');
+                          healthArea.appendChild(span);
+                        }
+                      })
+                    } //if(nowIdx === 0)
+
+
+                    // "일과" 탭 출력
+                    if(tabNowIdx === 1) {
+                      // 소제목 변경
+                      const firstTit = document.querySelector('#detailIcon > .iconArea:first-child > .areaTit');
+                      firstTit.textContent = '산책';
+
+                      const secTit = document.querySelector('#detailIcon > .iconArea:last-child > .areaTit');
+                      secTit.textContent = '목욕';
+
+                      // '산책'값을 컨테이너에 출력
+                      if(obj.walk.walk !== null) {
+                        // walk값이 있으면 출력
+                        const p = document.createElement('p');
+                        const img = document.createElement('img')
+                        img.src = "/icon/"+obj.walk.walk+".png";
+                        // "산책"아이콘이 출력될 컨테이너 선택
+                        const emotionArea = document.querySelector('#detailIcon > div:nth-of-type(1) > .iconOut');
+                        p.appendChild(img);
+                        emotionArea.appendChild(p);
+                      } else {
+                        // 없으면 메세지 출력
+                        const span = document.createElement('span');
+                        span.textContent = "산책이 기록되지 않았습니다 !";
+                        // "산책"아이콘이 출력될 컨테이너 선택
+                        const emotionArea = document.querySelector('#detailIcon > div:nth-of-type(1) > .iconOut');
+                        emotionArea.appendChild(span);
+                      }
+
+                      // '목욕'값을 컨테이너에 출력
+                      if(obj.bath.bath !== null) {
+                        // bath값이 있으면 출력
+                        const p = document.createElement('p');
+                        const img = document.createElement('img')
+                        img.src = "/icon/"+obj.bath.bath+".png";
+                        // "목욕"아이콘이 출력될 컨테이너 선택
+                        const healthArea = document.querySelector('#detailIcon > div:nth-of-type(2) > .iconOut');
+                        p.appendChild(img);
+                        healthArea.appendChild(p);
+                      } else {
+                        // 없으면 메세지 출력
+                        const span = document.createElement('span');
+                        span.textContent = "목욕이 기록되지 않았습니다 !";
+                        // "목욕"아이콘이 출력될 컨테이너 선택
+                        const healthArea = document.querySelector('#detailIcon > div:nth-of-type(2) > .iconOut');
+                        healthArea.appendChild(span);
+                      }
+                    } //nowIdx === 1
+
+                    // "급여" 탭 출력
+                    if(tabNowIdx === 2) {
+                      // 소제목 변경
+                      const firstTit = document.querySelector('#detailIcon > .iconArea:first-child > .areaTit');
+                      firstTit.textContent = '사료';
+
+                      const secTit = document.querySelector('#detailIcon > .iconArea:last-child > .areaTit');
+                      secTit.textContent = '간식';
+
+                      // treats 컬럼 값을 추출해 배열형태로 저장
+                      let treatsItem = [];
+                      obj.treats.forEach((objTreats)=>{
+                        treatsItem.push(objTreats.treats);
+                      })
+
+                      // 출력하기 전 컨테이너 비우기
+                      const iconOuts = document.querySelectorAll('.iconOut');
+                      iconOuts.forEach((iconOut)=>{
+                        while(iconOut.childElementCount > 0) {
+                          iconOut.removeChild(iconOut.firstChild);
+                        }
+                      })
+
+                      // feed값을 컨테이너에 출력
+                      if(obj.feed.feed !== null) {
+                        
+                        // feed값이 있으면 출력
+                        const p = document.createElement('p');
+                        const img = document.createElement('img')
+                        img.src = "/icon/"+obj.feed.feed+".png";
+                        // "사료"아이콘이 출력될 컨테이너 선택
+                        const emotionArea = document.querySelector('#detailIcon > div:nth-of-type(1) > .iconOut');
+                        p.appendChild(img);
+                        emotionArea.appendChild(p);
+                      } else {
+                        // 없으면 메세지 출력
+                        const span = document.createElement('span');
+                        span.textContent = "사료가 기록되지 않았습니다 !";
+                        // "사료"아이콘이 출력될 컨테이너 선택
+                        const emotionArea = document.querySelector('#detailIcon > div:nth-of-type(1) > .iconOut');
+                        emotionArea.appendChild(span);
+                      }
+
+                      // 배열로 저장한 treats값들을 컨테이너에 출력
+                      treatsItem.forEach((treats)=>{
+                        // treats값 있으면 출력
+                        if(treats !== null) {
+                          const p = document.createElement('p');
+                          const img = document.createElement('img')
+                          img.src = "/icon/"+treats+".png";
+                          // "간식"아이콘이 출력될 컨테이너 선택
+                          const healthArea = document.querySelector('#detailIcon > div:nth-of-type(2) > .iconOut');
+                          p.appendChild(img);
+                          healthArea.appendChild(p);
+                        } else {
+                          // 없으면 메세지 출력
+                          const span = document.createElement('span');
+                          span.textContent = "간식이 기록되지 않았습니다 !";
+                          // "간식"아이콘이 출력될 컨테이너 선택
+                          const healthArea = document.querySelector('#detailIcon > div:nth-of-type(2) > .iconOut');
+                          healthArea.appendChild(span);
+                        }
+                      })
+                    } //if(nowIdx === 2)
+
+                  }) //$detailLi.addEventListener('click'
+
+                }) //$detailUl.forEach
+              }) // then
+              .catch(error => {
+                console.error('Error:', error);
+              });
+              $btnClose.addEventListener('click', ()=>{
+                $detail.classList.remove('on');
+            }) // fetch
+
+          }) //$li.addEventListener('click'
+    
+        }); //$lis.forEach
+
+      })()
+
+      // 상단의 '기록삭제' 버튼 누르면 checkbox 노출
+      const $selectListBtn = document.querySelector('.selectListBtn');
+      const $inputContainers = document.querySelectorAll('.inputContainer');
+      const $checkboxes = document.querySelectorAll('.listCheckbox');
+
+      // $selectListBtn 클릭 시 inputContainer 토글
+      $selectListBtn.addEventListener('click', (evt) => {
+        evt.preventDefault();
+        let isChecked = false;
+
+        $checkboxes.forEach(cb => {
+            if (cb.checked) {
+                isChecked = true;
+            }
+        });
+
+        if (isChecked) {
+          // 체크된 항목이 있을 때만 폼을 제출
+          const result = confirm('선택한 기록을 삭제하시겠습니까?');
+          if(result) {
+            document.deleteDataFrm.submit();
+          }
+        } else {
+          $inputContainers.forEach(container => {
+            container.style.display = container.style.display === 'none' ? 'flex' : 'none';
+          });
+          // 버튼 텍스트 변경
+          $selectListBtn.textContent = $selectListBtn.textContent === '기록선택' ? '목록보기' : '기록선택';
+        }
+        
+      });
+
+      // 체크박스 상태 변경 시 버튼 텍스트 업데이트
+      $checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', () => {
+          let isChecked = false;
+
+          $checkboxes.forEach(cb => {
+              if (cb.checked) {
+                  isChecked = true;
+              }
+          });
+          
+          $selectListBtn.textContent = isChecked ? '선택삭제' : '목록보기';
+          $selectListBtn.type = isChecked ? 'submit' : 'button';
+        });
+      });
+
+  </script>
+</body>
+</html>

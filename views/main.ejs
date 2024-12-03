@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>미정</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="/css/reset.css">
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+</head>
+<body>
+  <!-- 오늘 페이지 -->
+  <div id="wrap" class="main">
+
+    <header>
+      <!-- 달력아이콘 : 현재년월과 일치하는 목록페이지로 이동 -->
+      <a href="/calendar/<%=paramsYear%>/<%=paramsMonth%>">
+        <i class="fa-regular fa-calendar" title="일지보기"></i>
+      </a>
+      <!-- 오늘day(일) 출력 -->
+      <h1><span><%=paramsDay%></span>일</h1>
+
+      <!-- 오늘날짜로 조회한 데이터가 있는지 검사해서 편집/추가버튼 생성 -->
+      <%# if(conditionData.length > 0 || healthData.length > 0 || treatsData.length > 0) { %>
+      <% if(checkCount > 0) { %>
+        <a href="/edit/<%=paramsYear%>/<%=paramsMonth%>/<%=paramsDay%>">편집</a>
+      <% } else { %>
+        <a href="/add/<%=paramsYear%>/<%=paramsMonth%>/<%=paramsDay%>">추가</a>
+      <% } %>
+    </header>
+
+    <section>
+      <h2>상세보기</h2>
+      
+      <article class="conditionIcons">
+        <h3>상태아이콘</h3>
+
+        <!-- 입력데이터가 있으면 출력할 ul -->
+        <% if(checkCount > 0) { %>
+
+        <ul>
+
+          <!-- /main의 conditionData 배열은 항상 한개의 아이템(오늘)만 갖기때문에 배열순회X -->
+        <% for(let condition in conditionData[0]) { %>
+          <% if(conditionData[0][condition] !== null) { %>
+            <% const imgSrc = "/icon/"+conditionData[0][condition]+".png" %>
+        <li>
+          <!-- <img src="./../public/images/<%# objCondition[condition] %>.png" alt=""> -->
+           <img src=<%=imgSrc%> alt="<%= conditionData[0][condition] %>">
+        </li>
+          <% } %>
+        <% } %>
+      
+        <% for(let objHealth of healthData) { %>
+          <!-- healthData배열의 아이템인 모든 objHealth에서 health 라는 하나의 이름의 프로퍼티만 뽑기때문에 객체순회X -->
+          <% if(objHealth.health !== null) { %>
+            <% const imgSrc = "/icon/"+objHealth.health+".png" %>
+          <li> 
+            <img src=<%=imgSrc%> alt="<%= objHealth.health %>">
+          </li>
+          <% } %>
+        <% } %>
+
+        <% for(let objTreats of treatsData) { %>
+          <!-- healthData배열과 마찬가지로 객체순회X -->
+          <% if(objTreats.treats !== null) { %>
+            <% const imgSrc = "/icon/"+objTreats.treats+".png" %>
+          <li> 
+            <img src=<%=imgSrc%> alt="<%= objTreats.treats %>">
+          </li>
+          <% } %>
+        <% } %>
+
+        </ul>
+
+        <% } %>
+      </article>
+
+      <article class="currentWeather">
+        <h3>현재날씨정보</h3>
+        <!-- <img src="https://openweathermap.org/img/wn/10d@2x.png" alt="Cloud"> -->
+        
+        <!-- JS에서 API로 비동기요청하여 받은데이터로 내용을 대치함 -->
+        <div class="currentIcon">
+          <img src="https://openweathermap.org/img/wn/10d@2x.png" alt="Cloud">
+        </div>
+
+        <div class="currentInfo">
+          <p><span class="city">Seoul</span></p>
+          <h3><span class="currentemp">23</span>°</h3>
+          <p><span class="description">clouds</span></p>
+        </div>
+        
+      </article>
+
+      <article class="additional todayWeather">
+        <h3>가까운날씨정보</h3>
+
+        <!-- JS에서 API로 비동기요청하여 받은데이터로 <li>를 동적으로 생성 -->
+        <ul>
+          <!--
+          <li>
+            <p>오전 3시</p>
+            <p class="frame"><img src="/images/weather.png" alt="raining"></p>
+            <p>30°</p>
+          </li>
+            -->
+        </ul>
+      </article>
+
+      <article class="additional walkAdvice">
+        <h3>유의사항</h3>
+        <p class="title">오늘 중 산책하기에 가장 이상적인 기온의 시각은</p>
+        <ul>
+          <li>
+            <p>오후 6시</p>
+            <p class="frame"><img src="/images/weather.png" alt="raining"></p>
+            <p>30°</p>
+          </li>
+
+          <li>
+            <p>오후 9시</p>
+            <p class="frame"><img src="/images/weather.png" alt="raining"></p>
+            <p>30°</p>
+          </li>
+
+          <li>
+            <p>오전 12시</p>
+            <p class="frame"><img src="/images/weather.png" alt="raining"></p>
+            <p>30°</p>
+          </li>
+        </ul>
+        <p class="title">입니다.</p>
+      </article>
+
+      <article class="additional notice">
+        <!-- <p>
+          반려견이 더위를 느낄 수 있습니다.
+        </p>
+
+        <div class="recommend">
+          <ul>
+            <li>탈수 위험이 있어 충분한 물 급여에 유의해야 합니다.</li>
+            <li>차 안에 강아지를 혼자 두는 것은 매우 위험하오니 주의해야 합니다.</li>
+            <li>쿨 매트 등의 사용으로 더위를 피할 수 있습니다.</li>
+          </ul>
+        </div> -->
+
+      </article>
+
+    </section>
+
+    <footer>
+    </footer>
+
+    <aside>
+      
+    </aside>
+
+  </div>
+
+  <script>
+  
+    // 2. 위치정보요청 성공 시 실행될 함수 - 사용자의 현재위치
+    const getposFn = (position)=>{
+
+      // 3. 필요한 데이터 가져오기
+      const lat = position.coords.latitude;
+      const lon = position.coords.longitude;
+      const apiKey = '8019913290e2983feeeb1cf06aacb633';
+
+      
+      // 4. 비동기 요청
+      // 4-1. 현재날씨 요청
+      (async function() {
+        
+        const currentUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
+
+        const currentData = await (await fetch(currentUrl)).json();
+  
+        console.log('currentData =', currentData)
+
+        // 출력
+        // 날씨아이콘
+        const $currentIcon = document.querySelector('.currentWeather>.currentIcon>img');
+
+        $currentIcon.src = `https://openweathermap.org/img/wn/${currentData.weather[0].icon}@2x.png`;
+        
+        $currentIcon.alt = currentData.weather[0].description;
+        $currentIcon.title = currentData.weather[0].description;
+
+        // 날씨정보
+          // 현재지역
+        const $city = document.querySelector('.currentWeather>.currentInfo>p>.city');
+        $city.textContent = currentData.name;
+
+          // 현재기온
+        const currentTemperature = currentData.main.temp;
+        const $temp = $city.parentElement.nextElementSibling.firstChild;
+        $temp.textContent = currentTemperature;
+        
+          // 날씨설명
+        const $description = document.querySelector('.currentWeather>.currentInfo>p>.description');
+        $description.textContent = currentData.weather[0].main;
+
+        // 기온에 따른 메세지 출력
+        let noticeHTML = '';
+
+        if (currentTemperature < 15) {
+          noticeHTML = `
+            <p>반려견이 추위를 느낄 수 있습니다.</p>
+            <div class="recommend">
+              <ul>
+                <li>나이가 어리거나 많은 강아지는 체온조절 능력이 떨어져요.</li>
+                <li>옷과 같은 방한장비로 대비해요.</li>
+                <li>배변봉투와 휴지를 필참해주세요.</li>
+              </ul>
+            </div>`;
+        } else if (currentTemperature >= 15 && currentTemperature <= 25) {
+          noticeHTML = `
+            <p>반려견이 산책하기에 이상적인 기온입니다.</p>
+            <div class="recommend">
+              <ul>
+                <li>즐거운 산책 되세요!</li>
+                <li>하루 산책시간은, 소형견은 30분, 중형견은 50분, 대형견은 2시간 내외가 권장됩니다.</li>
+                <li>배변봉투와 휴지를 필참해주세요.</li>
+              </ul>
+            </div>`;
+        } else if(currentTemperature) {
+          noticeHTML = `
+            <p>반려견이 더위를 느낄 수 있습니다?</p>
+            <div class="recommend">
+              <ul>
+                <li>탈수 위험이 있어 충분한 물 급여에 유의해야 합니다.</li>
+                <li>차 안에 강아지를 혼자 두는 것은 매우 위험하오니 주의해야 합니다.</li>
+                <li>쿨 매트 등의 사용으로 더위를 피할 수 있습니다.</li>
+              </ul>
+            </div>`;
+        }
+
+        // HTML 요소에 삽입
+        const $noticeContainer = document.querySelector('.notice'); // noticeContainer라는 요소에 추가
+        $noticeContainer.innerHTML = noticeHTML;
+
+      }) ();
+
+      // 4-2. 가까운날씨(3시간 간격) 요청
+      (async function() {
+
+        const todayWeatherUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
+
+        const nearData = await (await fetch(todayWeatherUrl)).json();
+
+        console.log('nearData =', nearData);
+
+        // 날씨출력
+        
+        // 요소를 동적으로 생성해서 기존 ul에 결합
+        const $nearInfoUl = document.querySelector('.todayWeather>ul')
+        ;
+        // 현재시각으로부터 가까운 8개 시간만 출력할것임
+        for(let i=0; i<8; i++) {
+
+          // API의 문자열인 date를 실제 Date객체로 변환하여 8개 추출
+          const nearTime = new Date(nearData.list[i].dt_txt);
+          // console.log('nearTime.getDate() =', nearTime.getDate());
+          // console.log('nearTime.getHours() =', nearTime.getHours());
+
+          // 정보를 결합할 li생성
+          const $li = document.createElement('li');
+
+          // 시각을 출력할 p태그생성
+          const $ptime = document.createElement('p');
+
+
+
+          // 출력할 시간은 12시간제
+          const time12clock = nearTime.getHours() % 12;
+
+          // 어제오늘내일 구분할 if문
+          if(nearTime.getDate() < new Date().getDate()) {
+            
+            // 오전오후를 구분할 if문
+            if(nearTime.getHours() <12) {
+              $ptime.textContent = '어제 오전 ' + time12clock + '시';
+            } else if(nearTime.getHours() === 12) {
+              $ptime.textContent = '어제 오후 12시';
+            } else {
+              $ptime.textContent = '어제 오후 ' + time12clock + '시';
+            }
+          } else if(nearTime.getDate() === new Date().getDate()) {
+            if(nearTime.getHours() < 12) {
+              $ptime.textContent = '오전 ' + time12clock + '시';
+            } else if(nearTime.getHours() === 12) {
+              $ptime.textContent = '오후 12시';
+            } else {
+              $ptime.textContent = '오후 ' + time12clock + '시';
+            }
+          } else if(nearTime.getDate() > new Date().getDate()) {
+            if(nearTime.getHours() <12) {
+              $ptime.textContent = '내일 오전 ' + time12clock + '시';
+            } else if(nearTime.getHours() === 12) {
+              $ptime.textContent = '내일 오후 12시';
+            } else {
+              $ptime.textContent = '내일 오후 ' + time12clock + '시';
+            }
+          }
+
+          // 아이콘img를 감쌀 frame역할의 p태그 생성
+          const $pframe = document.createElement('p');
+          $pframe.classList.add('frame')
+
+          // 아이콘을 출력할 img태그 생성 
+          const $img = document.createElement('img');
+
+          // API로 받은 데이터에서 아이콘 추출 후 적용
+          $img.setAttribute('src', `https://openweathermap.org/img/wn/${nearData.list[i].weather[0].icon}@2x.png`);
+
+          // 기온출력할 p태그생성 
+          const $ptemp = document.createElement('p');
+          console.log('nearTime = ',nearTime)
+
+          // API로 받은 데이터에서 기온 추출 후 적용
+          $ptemp.textContent = nearData.list[i].main.temp + '°';
+
+          // 태그결합
+          $li.append($ptime);
+          $li.append($pframe);
+          $pframe.append($img)
+          $li.append($ptemp);
+          $nearInfoUl.append($li);
+          
+        }
+
+        // 이상적인 날씨 추출
+        // 현재 시각을 기준으로 8개 시간 데이터 필터링
+        const now = new Date();
+        const closeWeatherData = nearData.list.filter(item => {
+          const nearTime = new Date(item.dt_txt);
+          return Math.abs(nearTime - now) < 8 * 60 * 60 * 1000; // 8시간 이내
+        });
+
+        // 비와 눈이 아닌 데이터 필터링
+        const idealWeatherData = closeWeatherData.filter(item => {
+          const isClearWeather = item.weather[0].main !== "Rain" && item.weather[0].main !== "Snow";
+          return isClearWeather;
+        });
+
+        // 기온 기준으로 정렬 (가장 평균 20도에 가까운 순서)
+        idealWeatherData.sort((a, b) => Math.abs(a.main.temp - 20) - Math.abs(b.main.temp - 20));
+
+        // 상위 3개 데이터만 추출 (3개 이상이면 3개, 미만이면 가진 개수만큼)
+        const top3WeatherData = idealWeatherData.slice(0, Math.min(idealWeatherData.length, 3));
+
+        console.log(top3WeatherData);
+        // walkAdvice 영역 업데이트
+        const $idealTimes = document.querySelectorAll('.walkAdvice > ul > li');
+
+        top3WeatherData.forEach((data, index) => {
+          if (index < $idealTimes.length) {
+            const nearTime = new Date(data.dt_txt);
+
+            // 시각 출력 (12시간제)
+            const time12clock = nearTime.getHours() % 12;
+
+            let period = nearTime.getHours() < 12 ? '오전' : '오후';
+            let timeLabel = '';
+
+            // 어제오늘내일 구분할 if문
+            if(nearTime.getDate() < new Date().getDate()) {
+              
+              // 오전오후를 구분할 if문
+              if(nearTime.getHours() <12) {
+                timeLabel = '어제 오전 ' + time12clock + '시';
+              } else if(nearTime.getHours() === 12) {
+                timeLabel = '어제 오후 12시';
+              } else {
+                timeLabel = '어제 오후 ' + time12clock + '시';
+              }
+            } else if(nearTime.getDate() === new Date().getDate()) {
+              if(nearTime.getHours() < 12) {
+                timeLabel = '오전 ' + time12clock + '시';
+              } else if(nearTime.getHours() === 12) {
+                timeLabel = '오후 12시';
+              } else {
+                timeLabel = '오후 ' + time12clock + '시';
+              }
+            } else if(nearTime.getDate() > new Date().getDate()) {
+              if(nearTime.getHours() <12) {
+                timeLabel = '내일 오전 ' + time12clock + '시';
+              } else if(nearTime.getHours() === 12) {
+                timeLabel = '내일 오후 12시';
+              } else {
+                timeLabel = '내일 오후 ' + time12clock + '시';
+              }
+            }
+
+            // 시각 출력
+            $idealTimes[index].querySelector('p:first-child').textContent = timeLabel;
+
+            // 아이콘 출력
+            const $img = $idealTimes[index].querySelector('.frame img');
+            $img.setAttribute('src', `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`);
+            $img.setAttribute('alt', data.weather[0].description);
+
+            // 기온 출력
+            $idealTimes[index].querySelector('p:last-child').textContent = `${data.main.temp}°`;
+          }
+        });
+      }) ();
+    }
+
+
+    // 2. 위치정보요청 실패 시 실행될 함수 - 서울
+    const errposFn = (err)=>{
+
+      // 3. 필요한 데이터 가져오기 - 서울 경복궁
+      const lat = 37.58037;
+      const lon = 126.9770;
+      const apiKey = '8019913290e2983feeeb1cf06aacb633';
+      
+      (async function() {
+        
+        const currentUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
+
+        const currentData = await (await fetch(currentUrl)).json();
+  
+        console.log('currentData =', currentData)
+
+        // 출력
+        // 날씨아이콘
+        const $currentIcon = document.querySelector('.currentWeather>.currentIcon>img');
+
+        $currentIcon.src = `https://openweathermap.org/img/wn/${currentData.weather[0].icon}@2x.png`;
+        
+        $currentIcon.alt = currentData.weather[0].description;
+        $currentIcon.title = currentData.weather[0].description;
+
+        // 날씨정보
+          // 현재지역
+        const $city = document.querySelector('.currentWeather>.currentInfo>p>.city');
+        $city.textContent = currentData.name;
+
+          // 현재기온
+        const currentTemperature = currentData.main.temp;
+        const $temp = $city.parentElement.nextElementSibling.firstChild;
+        $temp.textContent = currentTemperature;
+        
+          // 날씨설명
+        const $description = document.querySelector('.currentWeather>.currentInfo>p>.description');
+        $description.textContent = currentData.weather[0].main;
+
+        
+        // 기온에 따른 메세지 출력
+        let noticeHTML = '';
+
+        if (currentTemperature < 15) {
+          noticeHTML = `
+            <p>반려견이 추위를 느낄 수 있습니다.</p>
+            <div class="recommend">
+              <ul>
+                <li>나이가 어리거나 많은 강아지는 체온조절 능력이 떨어져요.</li>
+                <li>옷과 같은 방한장비로 대비해요.</li>
+                <li>배변봉투와 휴지를 필참해주세요.</li>
+              </ul>
+            </div>`;
+        } else if (currentTemperature >= 15 && currentTemperature <= 25) {
+          noticeHTML = `
+            <p>반려견이 산책하기에 이상적인 기온입니다.</p>
+            <div class="recommend">
+              <ul>
+                <li>즐거운 산책 되세요!</li>
+                <li>하루 산책시간은, 소형견은 30분, 중형견은 50분, 대형견은 2시간 내외가 권장됩니다.</li>
+                <li>배변봉투와 휴지를 필참해주세요.</li>
+              </ul>
+            </div>`;
+        } else {
+          noticeHTML = `
+            <p>반려견이 더위를 느낄 수 있습니다.</p>
+            <div class="recommend">
+              <ul>
+                <li>탈수 위험이 있어 충분한 물 급여에 유의해야 합니다.</li>
+                <li>차 안에 강아지를 혼자 두는 것은 매우 위험하오니 주의해야 합니다.</li>
+                <li>쿨 매트 등의 사용으로 더위를 피할 수 있습니다.</li>
+              </ul>
+            </div>`;
+        }
+
+        // HTML 요소에 삽입
+        const $noticeContainer = document.querySelector('.notice'); // noticeContainer라는 요소에 추가
+        $noticeContainer.innerHTML = noticeHTML;
+
+      }) ();
+
+      // 4-2. 가까운날씨(3시간 간격) 요청
+      (async function() {
+
+        const todayWeatherUrl = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
+
+        const nearData = await (await fetch(todayWeatherUrl)).json();
+
+        console.log('nearData =', nearData);
+
+        // 날씨출력
+        
+        // 요소를 동적으로 생성해서 기존 ul에 결합
+        const $nearInfoUl = document.querySelector('.todayWeather>ul')
+        ;
+        // 현재시각으로부터 가까운 8개 시간만 출력할것임
+        for(let i=0; i<8; i++) {
+
+          // API의 문자열인 date를 실제 Date객체로 변환하여 8개 추출
+          const nearTime = new Date(nearData.list[i].dt_txt);
+          // console.log('nearTime.getDate() =', nearTime.getDate());
+          // console.log('nearTime.getHours() =', nearTime.getHours());
+
+          // 정보를 결합할 li생성
+          const $li = document.createElement('li');
+
+          // 시각을 출력할 p태그생성
+          const $ptime = document.createElement('p');
+
+
+
+          // 출력할 시간은 12시간제
+          const time12clock = nearTime.getHours() % 12;
+
+          // 어제오늘내일 구분할 if문
+          if(nearTime.getDate() < new Date().getDate()) {
+            
+            // 오전오후를 구분할 if문
+            if(nearTime.getHours() <12) {
+              $ptime.textContent = '어제 오전 ' + time12clock + '시';
+            } else if(nearTime.getHours() === 12) {
+              $ptime.textContent = '어제 오후 12시';
+            } else {
+              $ptime.textContent = '어제 오후 ' + time12clock + '시';
+            }
+          } else if(nearTime.getDate() === new Date().getDate()) {
+            if(nearTime.getHours() < 12) {
+              $ptime.textContent = '오전 ' + time12clock + '시';
+            } else if(nearTime.getHours() === 12) {
+              $ptime.textContent = '오후 12시';
+            } else {
+              $ptime.textContent = '오후 ' + time12clock + '시';
+            }
+          } else if(nearTime.getDate() > new Date().getDate()) {
+            if(nearTime.getHours() <12) {
+              $ptime.textContent = '내일 오전 ' + time12clock + '시';
+            } else if(nearTime.getHours() === 12) {
+              $ptime.textContent = '내일 오후 12시';
+            } else {
+              $ptime.textContent = '내일 오후 ' + time12clock + '시';
+            }
+          }
+
+          // 아이콘img를 감쌀 frame역할의 p태그 생성
+          const $pframe = document.createElement('p');
+          $pframe.classList.add('frame')
+
+          // 아이콘을 출력할 img태그 생성 
+          const $img = document.createElement('img');
+
+          // API로 받은 데이터에서 아이콘 추출 후 적용
+          $img.setAttribute('src', `https://openweathermap.org/img/wn/${nearData.list[i].weather[0].icon}@2x.png`);
+
+          // 기온출력할 p태그생성 
+          const $ptemp = document.createElement('p');
+          console.log('nearTime = ',nearTime)
+
+          // API로 받은 데이터에서 기온 추출 후 적용
+          $ptemp.textContent = nearData.list[i].main.temp + '°';
+
+          // 태그결합
+          $li.append($ptime);
+          $li.append($pframe);
+          $pframe.append($img)
+          $li.append($ptemp);
+          $nearInfoUl.append($li);
+          
+        }
+
+        
+        // 이상적인 날씨 추출
+        // 현재 시각을 기준으로 8개 시간 데이터 필터링
+        const now = new Date();
+        const closeWeatherData = nearData.list.filter(item => {
+          const nearTime = new Date(item.dt_txt);
+          return Math.abs(nearTime - now) < 8 * 60 * 60 * 1000; // 8시간 이내
+        });
+
+        // 비와 눈이 아닌 데이터 필터링
+        const idealWeatherData = closeWeatherData.filter(item => {
+          const isClearWeather = item.weather[0].main !== "Rain" && item.weather[0].main !== "Snow";
+          return isClearWeather;
+        });
+
+        // 기온 기준으로 정렬 (가장 평균 20도에 가까운 순서)
+        idealWeatherData.sort((a, b) => Math.abs(a.main.temp - 20) - Math.abs(b.main.temp - 20));
+
+        // 상위 3개 데이터만 추출 (3개 이상이면 3개, 미만이면 가진 개수만큼)
+        const top3WeatherData = idealWeatherData.slice(0, Math.min(idealWeatherData.length, 3));
+
+        console.log(top3WeatherData);
+        // walkAdvice 영역 업데이트
+        const $idealTimes = document.querySelectorAll('.walkAdvice > ul > li');
+
+        top3WeatherData.forEach((data, index) => {
+          if (index < $idealTimes.length) {
+            const nearTime = new Date(data.dt_txt);
+
+            // 시각 출력 (12시간제)
+            const time12clock = nearTime.getHours() % 12;
+
+            let period = nearTime.getHours() < 12 ? '오전' : '오후';
+            let timeLabel = '';
+
+            // 어제오늘내일 구분할 if문
+            if(nearTime.getDate() < new Date().getDate()) {
+              
+              // 오전오후를 구분할 if문
+              if(nearTime.getHours() <12) {
+                timeLabel = '어제 오전 ' + time12clock + '시';
+              } else if(nearTime.getHours() === 12) {
+                timeLabel = '어제 오후 12시';
+              } else {
+                timeLabel = '어제 오후 ' + time12clock + '시';
+              }
+            } else if(nearTime.getDate() === new Date().getDate()) {
+              if(nearTime.getHours() < 12) {
+                timeLabel = '오전 ' + time12clock + '시';
+              } else if(nearTime.getHours() === 12) {
+                timeLabel = '오후 12시';
+              } else {
+                timeLabel = '오후 ' + time12clock + '시';
+              }
+            } else if(nearTime.getDate() > new Date().getDate()) {
+              if(nearTime.getHours() <12) {
+                timeLabel = '내일 오전 ' + time12clock + '시';
+              } else if(nearTime.getHours() === 12) {
+                timeLabel = '내일 오후 12시';
+              } else {
+                timeLabel = '내일 오후 ' + time12clock + '시';
+              }
+            }
+
+            // 시각 출력
+            $idealTimes[index].querySelector('p:first-child').textContent = timeLabel;
+
+            // 아이콘 출력
+            const $img = $idealTimes[index].querySelector('.frame img');
+            $img.setAttribute('src', `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`);
+            $img.setAttribute('alt', data.weather[0].description);
+
+            // 기온 출력
+            $idealTimes[index].querySelector('p:last-child').textContent = `${data.main.temp}°`;
+          }
+        });
+
+      }) ();
+    }
+
+    // 1. 위치정보요청 후 실행될 함수 호출
+    navigator.geolocation.getCurrentPosition(getposFn, errposFn);
+
+  </script>
+</body>
+</html>
