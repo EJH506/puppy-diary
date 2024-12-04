@@ -1,4 +1,4 @@
-## PUPPYDIARY
+## 육멍일지 (PUPPYDIARY)
 (접속 링크)
 <br /><br />
 
