@@ -29,3 +29,22 @@
 <br /><br />
 
 ### 🕹 시작 가이드
+node.js가 설치된 환경이어야 합니다.
+
+```
+// 프로젝트 복제
+$ git clone https://github.com/UJH506/puppydiary.git
+
+// 의존성 설치 (경로 - 해당 프로젝트)
+$ npm install
+
+// .evn 파일 생성 (경로 - 해당 프로젝트 루트)
+DATABASE_HOST='localhost'
+DATABASE_PORT='3306'
+DATABASE_USER='이름을 작성하세요'
+DATABASE_PASSWORD='비밀번호를 작성하세요'
+DATABASE_NAME='puppydb'
+
+// 실행
+$ npm start
+```
