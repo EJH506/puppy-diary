@@ -38,7 +38,7 @@ $ git clone https://github.com/UJH506/puppydiary.git
 // 의존성 설치 (경로 - 해당 프로젝트)
 $ npm install
 
-// .evn 파일 생성 (경로 - 해당 프로젝트 루트)
+// 파일명 '.evn' 파일 생성 (경로 - 해당 프로젝트 루트)
 DATABASE_HOST='localhost'
 DATABASE_PORT='3306'
 DATABASE_USER='이름을 작성하세요'
