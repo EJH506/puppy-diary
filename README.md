@@ -45,6 +45,9 @@ DATABASE_USER='이름을 작성하세요'
 DATABASE_PASSWORD='비밀번호를 작성하세요'
 DATABASE_NAME='puppydb'
 
+// DB 생성
+sql파일을 참조해 "puppydb"를 만드세요.
+
 // 실행
 $ npm start
 ```
