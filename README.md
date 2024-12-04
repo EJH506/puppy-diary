@@ -1,5 +1,5 @@
 ## 육멍일지 (PUPPYDIARY)
-(접속 링크)
+http://3.37.215.36:4500/
 <br /><br />
 
 ### 📖 프로젝트 소개
@@ -13,7 +13,14 @@
 - 주요 라이브러리 : Express, dotenv
 - 데이터베이스 : MySql
 - IDE : VS Code
-- 배포환경 :
+- 배포환경
+  - 클라우드 서비스: AWS EC2 (Elastic Compute Cloud)
+  - 운영체제: Ubuntu 20.04 LTS
+  - 백엔드: Node.js (Express 프레임워크 사용)
+  - 데이터베이스: MySQL (EC2 내 로컬 MySQL 서버 사용)
+  - 배포 방식: SSH와 SCP를 사용하여 EC2 인스턴스에 코드 배포
+  - 도메인: http://3.37.215.36
+  - 보안: SSH 키를 이용한 보안 접속 및 MySQL 서버 접근 제어 (bind-address 설정 및 포트 3306 개방)
 <br /><br />
 
 ### 📌 주요 기능
