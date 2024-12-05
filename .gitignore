@@ -1,0 +1,5 @@
+node_modules/
+.env
+작업과정.txt
+Dockerfile
+.dockerignore
