@@ -2,14 +2,15 @@ const dbcon = require('./../database/sql')
 const express = require('express');
 const router = express.Router();
 
-// main.ejs로 활용될 오늘날짜 가져오기 
-const today = new Date();
-const todayYear = today.getFullYear();
-const todayMonth = today.getMonth()+1;
-const todayDate = today.getDate();
-
 // 경로지정 없을시 main(오늘)페이지로 redirect
 router.get('/', (req,res)=>{
+  
+  // main.ejs로 활용될 오늘날짜 가져오기 
+  const today = new Date();
+  const todayYear = today.getFullYear();
+  const todayMonth = today.getMonth()+1;
+  const todayDate = today.getDate();
+
   res.redirect(`main/${todayYear}/${todayMonth}/${todayDate}`);
 });
 
