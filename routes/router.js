@@ -11,7 +11,9 @@ router.get('/', (req,res)=>{
   const todayYear = today.getFullYear();
   const todayMonth = today.getMonth()+1;
   const todayDate = today.getDate();
-  
+
+  console.log("today = "+today);
+
   res.redirect(`main/${todayYear}/${todayMonth}/${todayDate}`);
 });
 
