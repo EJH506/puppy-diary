@@ -2,7 +2,6 @@ const dbcon = require('./../database/sql')
 const express = require('express');
 const router = express.Router();
 
-
 // 경로지정 없을시 main(오늘)페이지로 redirect
 router.get('/', (req,res)=>{
 
@@ -11,8 +10,6 @@ router.get('/', (req,res)=>{
   const todayYear = today.getFullYear();
   const todayMonth = today.getMonth()+1;
   const todayDate = today.getDate();
-
-  console.log("today = "+today);
 
   res.redirect(`main/${todayYear}/${todayMonth}/${todayDate}`);
 });
